@@ -1,0 +1,165 @@
+{
+  "entities": {
+    "Karyawan": {
+      "title": "Karyawan",
+      "description": "Informasi profile karyawan",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique ID karyawan" },
+        "nama": { "type": "string", "description": "Nama lengkap karyawan" },
+        "jabatan": { "type": "string", "description": "Jabatan karyawan" },
+        "gajiHari": { "type": "number", "description": "Gaji harian dasar karyawan" },
+        "tunjangan": { "type": "number", "description": "Tunjangan tambahan bulanan" },
+        "potongan": { "type": "number", "description": "Potongan default bulanan" },
+        "fingerprintStatus": { "type": "string", "description": "Status pendaftaran fingerprint" },
+        "fingerprintCode": { "type": "string", "description": "Kode template fingerprint terenkripsi" }
+      },
+      "required": ["id", "nama", "jabatan", "gajiHari", "tunjangan", "potongan"]
+    },
+    "Absensi": {
+      "title": "Absensi",
+      "description": "Log kehadiran harian karyawan",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "ID log kehadiran" },
+        "karyawanId": { "type": "string", "description": "Reference ke ID Karyawan" },
+        "karyawanNama": { "type": "string", "description": "Nama karyawan untuk kemudahan visual" },
+        "tanggal": { "type": "string", "description": "Tanggal absensi YYYY-MM-DD" },
+        "jamMasuk": { "type": "string", "description": "Jam masuk HH:MM" },
+        "jamKeluar": { "type": "string", "description": "Jam keluar HH:MM" },
+        "keterangan": { "type": "string", "description": "Hadir, Sakit, Izin" },
+        "fotoSelfie": { "type": "string", "description": "Foto selfie kamera Base64" },
+        "fotoSelfieKeluar": { "type": "string", "description": "Foto selfie keluar kamer Base64" }
+      },
+      "required": ["id", "karyawanId", "karyawanNama", "tanggal", "keterangan"]
+    },
+    "Payroll": {
+      "title": "Payroll",
+      "description": "Siklus penggajian bulanan karyawan",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "ID siklus penggajian" },
+        "karyawanId": { "type": "string", "description": "Reference ke ID Karyawan" },
+        "karyawanNama": { "type": "string", "description": "Nama karyawan" },
+        "bulan": { "type": "string", "description": "Bulan penggajian YYYY-MM" },
+        "jumlahKehadiran": { "type": "number", "description": "Jumlah kehadiran terverifikasi" },
+        "gajiPerHari": { "type": "number", "description": "Gaji per hari saat siklus dihitung" },
+        "tunjangan": { "type": "number", "description": "Tunjangan pada siklus dihitung" },
+        "potongan": { "type": "number", "description": "Potongan pada siklus dihitung" },
+        "totalGaji": { "type": "number", "description": "Total bersih gaji dihitung" },
+        "status": { "type": "string", "enum": ["Belum Dibayar", "Sudah Dibayar"], "description": "Status pembayaran" },
+        "metodePembayaran": { "type": "string", "description": "Tunai atau Transfer Bank" },
+        "tanggalPembayaran": { "type": "string", "description": "Tanggal transfer dilakukan" }
+      },
+      "required": ["id", "karyawanId", "karyawanNama", "bulan", "jumlahKehadiran", "gajiPerHari", "tunjangan", "potongan", "totalGaji", "status"]
+    },
+    "Kas": {
+      "title": "Kas",
+      "description": "Kas keuangan operasional gaji",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "ID record kas (biasanya 'operasional')" },
+        "kasTersedia": { "type": "number", "description": "Dana kas yang tersedia" },
+        "totalGajiWajibBayar": { "type": "number", "description": "Akumulasi komitmen gaji belum terbayar" }
+      },
+      "required": ["id", "kasTersedia", "totalGajiWajibBayar"]
+    },
+    "PermintaanDana": {
+      "title": "PermintaanDana",
+      "description": "Formulir permintaan tambahan kas ke Owner",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "ID permintaan dana" },
+        "tanggal": { "type": "string", "description": "Tanggal permintaan diajukan" },
+        "jumlahDana": { "type": "number", "description": "Jumlah dana yang diajukan" },
+        "alasan": { "type": "string", "description": "Alasan penambahan dana" },
+        "status": { "type": "string", "enum": ["Menunggu", "Disetujui", "Ditolak"], "description": "Status persetujuan owner" }
+      },
+      "required": ["id", "tanggal", "jumlahDana", "alasan", "status"]
+    },
+    "TransaksiKas": {
+      "title": "TransaksiKas",
+      "description": "Pemasukan dan pengeluaran kas operasional",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "ID unik transaksi" },
+        "tanggal": { "type": "string", "description": "Tanggal transaksi YYYY-MM-DD" },
+        "tipe": { "type": "string", "enum": ["Masuk", "Keluar"], "description": "Tipe transaksi" },
+        "jumlah": { "type": "number", "description": "Jumlah nominal transaksi" },
+        "kategori": { "type": "string", "description": "Kategori transaksi" },
+        "keterangan": { "type": "string", "description": "Uraian atau catatan transaksi" },
+        "pencatat": { "type": "string", "description": "Nama admin/owner pencatat" }
+      },
+      "required": ["id", "tanggal", "tipe", "jumlah", "kategori", "pencatat"]
+    },
+    "JurnalUmumEntry": {
+      "title": "JurnalUmumEntry",
+      "description": "Catatan jurnal umum ganda manual",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "ID unik entri jurnal umum" },
+        "tanggal": { "type": "string", "description": "Tanggal entri YYYY-MM-DD" },
+        "ref": { "type": "string", "description": "Referensi nomor bukti jurnal" },
+        "keterangan": { "type": "string", "description": "Uraian nama jurnal" },
+        "debetAkunCode": { "type": "string", "description": "Kode akun Debet" },
+        "debetAkunNama": { "type": "string", "description": "Nama akun Debet" },
+        "kreditAkunCode": { "type": "string", "description": "Kode akun Kredit" },
+        "kreditAkunNama": { "type": "string", "description": "Nama akun Kredit" },
+        "nominal": { "type": "number", "description": "Rupiah nominal Debet/Kredit" },
+        "pencatat": { "type": "string", "description": "Nama operator pencatat" },
+        "isAutomatic": { "type": "boolean", "description": "Apakah dibuat otomatis" }
+      },
+      "required": ["id", "tanggal", "ref", "keterangan", "debetAkunCode", "debetAkunNama", "kreditAkunCode", "kreditAkunNama", "nominal", "pencatat"]
+    },
+    "Lembur": {
+      "title": "Lembur",
+      "description": "Catatan jam lembur dan upah lembur karyawan",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "ID unik entri lembur" },
+        "karyawanId": { "type": "string", "description": "Reference ke ID Karyawan" },
+        "karyawanNama": { "type": "string", "description": "Nama lengkap karyawan" },
+        "tanggal": { "type": "string", "description": "Tanggal lembur YYYY-MM-DD" },
+        "jumlahJam": { "type": "number", "description": "Jumlah jam lembur" },
+        "tarifPerJam": { "type": "number", "description": "Tarif upah lembur per jam" },
+        "totalUpahLembur": { "type": "number", "description": "Total upah lembur yang diterima" },
+        "keterangan": { "type": "string", "description": "Catatan atau rincian pekerjaan lembur" }
+      },
+      "required": ["id", "karyawanId", "karyawanNama", "tanggal", "jumlahJam", "tarifPerJam", "totalUpahLembur", "keterangan"]
+    }
+  },
+  "firestore": {
+    "/karyawan/{id}": {
+      "schema": { "$ref": "Karyawan" },
+      "description": "Master data karyawan"
+    },
+    "/absensi/{id}": {
+      "schema": { "$ref": "Absensi" },
+      "description": "Master data kehadiran"
+    },
+    "/payroll/{id}": {
+      "schema": { "$ref": "Payroll" },
+      "description": "Siklus penggajian bulanan"
+    },
+    "/kas/{id}": {
+      "schema": { "$ref": "Kas" },
+      "description": "Keuangan kas perusahaan"
+    },
+    "/permintaan_dana/{id}": {
+      "schema": { "$ref": "PermintaanDana" },
+      "description": "Pengajuan dana ke owner"
+    },
+    "/transaksi_kas/{id}": {
+      "schema": { "$ref": "TransaksiKas" },
+      "description": "Log transaksi kas masuk/keluar"
+    },
+    "/jurnal_umum/{id}": {
+      "schema": { "$ref": "JurnalUmumEntry" },
+      "description": "Log penyesuaian jurnal umum manual"
+    },
+    "/lembur/{id}": {
+      "schema": { "$ref": "Lembur" },
+      "description": "Log jam lembur karyawan"
+    }
+  }
+}

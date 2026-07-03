@@ -1,0 +1,8 @@
+{
+  "name": "ArtemiPay",
+  "description": "Sistem keuangan dan penggajian terintegrasi Firebase real-time untuk Café Artemida dengan audit kas otomatis, jurnal penyesuaian ganda, dan verifikasi biometrik.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,174 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default catch-all rule (deny all by default)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Path identification and ID structure validation
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+    
+    function incoming() { 
+      return request.resource.data; 
+    }
+    
+    function existing() { 
+      return resource.data; 
+    }
+
+    // Structurally exact validation helper schemas
+    function isValidKaryawan(data) {
+      return data.keys().hasAll(['id', 'nama', 'jabatan', 'gajiHari', 'tunjangan', 'potongan'])
+        && data.id is string && data.id.size() <= 128
+        && data.nama is string && data.nama.size() <= 200
+        && data.jabatan is string && data.jabatan.size() <= 100
+        && (data.gajiHari is int || data.gajiHari is float) && data.gajiHari >= 0
+        && (data.tunjangan is int || data.tunjangan is float) && data.tunjangan >= 0
+        && (data.potongan is int || data.potongan is float) && data.potongan >= 0
+        && (data.get('fingerprintStatus', null) == null || (data.get('fingerprintStatus', '') is string && data.get('fingerprintStatus', '').size() <= 50))
+        && (data.get('fingerprintCode', null) == null || (data.get('fingerprintCode', '') is string && data.get('fingerprintCode', '').size() <= 2000))
+        && (data.get('faceStatus', null) == null || (data.get('faceStatus', '') is string && data.get('faceStatus', '').size() <= 50))
+        && (data.get('facePhoto', null) == null || (data.get('facePhoto', '') is string && data.get('facePhoto', '').size() <= 2000000))
+        && (data.get('nomorRekening', null) == null || (data.get('nomorRekening', '') is string && data.get('nomorRekening', '').size() <= 100))
+        && (data.get('namaRekening', null) == null || (data.get('namaRekening', '') is string && data.get('namaRekening', '').size() <= 200))
+        && (data.get('bankPilihan', null) == null || (data.get('bankPilihan', '') is string && data.get('bankPilihan', '').size() <= 50));
+    }
+
+    function isValidAbsensi(data) {
+      return data.keys().hasAll(['id', 'karyawanId', 'karyawanNama', 'tanggal', 'keterangan'])
+        && data.id is string && data.id.size() <= 128
+        && data.karyawanId is string && data.karyawanId.size() <= 128
+        && data.karyawanNama is string && data.karyawanNama.size() <= 200
+        && data.tanggal is string && data.tanggal.size() <= 10
+        && data.keterangan is string && data.keterangan.size() <= 50
+        && (data.get('jamMasuk', null) == null || (data.get('jamMasuk', '') is string && data.get('jamMasuk', '').size() <= 5))
+        && (data.get('jamKeluar', null) == null || (data.get('jamKeluar', '') is string && data.get('jamKeluar', '').size() <= 5))
+        && (data.get('fotoSelfie', null) == null || (data.get('fotoSelfie', '') is string && data.get('fotoSelfie', '').size() <= 2000000))
+        && (data.get('fotoSelfieKeluar', null) == null || (data.get('fotoSelfieKeluar', '') is string && data.get('fotoSelfieKeluar', '').size() <= 2000000));
+    }
+
+    function isValidPayroll(data) {
+      return data.keys().hasAll(['id', 'karyawanId', 'karyawanNama', 'bulan', 'jumlahKehadiran', 'gajiPerHari', 'tunjangan', 'potongan', 'totalGaji', 'status'])
+        && data.id is string && data.id.size() <= 128
+        && data.karyawanId is string && data.karyawanId.size() <= 128
+        && data.karyawanNama is string && data.karyawanNama.size() <= 200
+        && data.bulan is string && data.bulan.size() <= 10
+        && (data.jumlahKehadiran is int || data.jumlahKehadiran is float) && data.jumlahKehadiran >= 0
+        && (data.gajiPerHari is int || data.gajiPerHari is float) && data.gajiPerHari >= 0
+        && (data.tunjangan is int || data.tunjangan is float) && data.tunjangan >= 0
+        && (data.potongan is int || data.potongan is float) && data.potongan >= 0
+        && (data.totalGaji is int || data.totalGaji is float) && data.totalGaji >= 0
+        && data.status is string && (data.status == 'Belum Dibayar' || data.status == 'Sudah Dibayar')
+        && (data.get('lembur', null) == null || (data.get('lembur', 0) is int || data.get('lembur', 0) is float))
+        && (data.get('metodePembayaran', null) == null || (data.get('metodePembayaran', '') is string && data.get('metodePembayaran', '').size() <= 50))
+        && (data.get('tanggalPembayaran', null) == null || (data.get('tanggalPembayaran', '') is string && data.get('tanggalPembayaran', '').size() <= 20));
+    }
+
+    function isValidLembur(data) {
+      return data.keys().hasAll(['id', 'karyawanId', 'karyawanNama', 'tanggal', 'jumlahJam', 'tarifPerJam', 'totalUpahLembur'])
+        && data.id is string && data.id.size() <= 128
+        && data.karyawanId is string && data.karyawanId.size() <= 128
+        && data.karyawanNama is string && data.karyawanNama.size() <= 200
+        && data.tanggal is string && data.tanggal.size() <= 10
+        && (data.jumlahJam is int || data.jumlahJam is float) && data.jumlahJam >= 0
+        && (data.tarifPerJam is int || data.tarifPerJam is float) && data.tarifPerJam >= 0
+        && (data.totalUpahLembur is int || data.totalUpahLembur is float) && data.totalUpahLembur >= 0
+        && (data.get('keterangan', null) == null || (data.get('keterangan', '') is string && data.get('keterangan', '').size() <= 1000));
+    }
+
+    function isValidKas(data) {
+      return data.keys().hasAll(['id', 'kasTersedia', 'totalGajiWajibBayar'])
+        && data.id is string && data.id.size() <= 128
+        && (data.kasTersedia is int || data.kasTersedia is float)
+        && (data.totalGajiWajibBayar is int || data.totalGajiWajibBayar is float);
+    }
+
+    function isValidPermintaanDana(data) {
+      return data.keys().hasAll(['id', 'tanggal', 'jumlahDana', 'alasan', 'status'])
+        && data.id is string && data.id.size() <= 128
+        && data.tanggal is string && data.tanggal.size() <= 20
+        && (data.jumlahDana is int || data.jumlahDana is float) && data.jumlahDana >= 0
+        && data.alasan is string && data.alasan.size() <= 1000
+        && data.status is string && (data.status == 'Menunggu' || data.status == 'Disetujui' || data.status == 'Ditolak');
+    }
+
+    function isValidTransaksiKas(data) {
+      return data.keys().hasAll(['id', 'tanggal', 'tipe', 'jumlah', 'kategori', 'pencatat'])
+        && data.id is string && data.id.size() <= 128
+        && data.tanggal is string && data.tanggal.size() <= 20
+        && data.tipe is string && (data.tipe == 'Masuk' || data.tipe == 'Keluar')
+        && (data.jumlah is int || data.jumlah is float) && data.jumlah >= 0
+        && data.kategori is string && data.kategori.size() <= 100
+        && data.pencatat is string && data.pencatat.size() <= 200
+        && (data.get('keterangan', null) == null || (data.get('keterangan', '') is string && data.get('keterangan', '').size() <= 1000));
+    }
+
+    function isValidJurnalUmumEntry(data) {
+      return data.keys().hasAll(['id', 'tanggal', 'ref', 'keterangan', 'debetAkunCode', 'debetAkunNama', 'kreditAkunCode', 'kreditAkunNama', 'nominal', 'pencatat'])
+        && data.id is string && data.id.size() <= 128
+        && data.tanggal is string && data.tanggal.size() <= 20
+        && data.ref is string && data.ref.size() <= 50
+        && data.keterangan is string && data.keterangan.size() <= 500
+        && data.debetAkunCode is string && data.debetAkunCode.size() <= 20
+        && data.debetAkunNama is string && data.debetAkunNama.size() <= 100
+        && data.kreditAkunCode is string && data.kreditAkunCode.size() <= 20
+        && data.kreditAkunNama is string && data.kreditAkunNama.size() <= 100
+        && (data.nominal is int || data.nominal is float) && data.nominal >= 0
+        && data.pencatat is string && data.pencatat.size() <= 200
+        && (data.get('isAutomatic', null) == null || data.get('isAutomatic', false) is bool);
+    }
+
+    // Matching collection pathways explicitly
+    match /karyawan/{id} {
+      allow read: if true;
+      allow create, update: if isValidId(id) && isValidKaryawan(incoming());
+      allow delete: if isValidId(id);
+    }
+
+    match /absensi/{id} {
+      allow read: if true;
+      allow create, update: if isValidId(id) && isValidAbsensi(incoming());
+      allow delete: if isValidId(id);
+    }
+
+    match /payroll/{id} {
+      allow read: if true;
+      allow create, update: if isValidId(id) && isValidPayroll(incoming());
+      allow delete: if isValidId(id);
+    }
+
+    match /kas/{id} {
+      allow read: if true;
+      allow create, update: if isValidId(id) && isValidKas(incoming());
+      allow delete: if isValidId(id);
+    }
+
+    match /permintaan_dana/{id} {
+      allow read: if true;
+      allow create, update: if isValidId(id) && isValidPermintaanDana(incoming());
+      allow delete: if isValidId(id);
+    }
+
+    match /transaksi_kas/{id} {
+      allow read: if true;
+      allow create, update: if isValidId(id) && isValidTransaksiKas(incoming());
+      allow delete: if isValidId(id);
+    }
+
+    match /jurnal_umum/{id} {
+      allow read: if true;
+      allow create, update: if isValidId(id) && isValidJurnalUmumEntry(incoming());
+      allow delete: if isValidId(id);
+    }
+
+    match /lembur/{id} {
+      allow read: if true;
+      allow create, update: if isValidId(id) && isValidLembur(incoming());
+      allow delete: if isValidId(id);
+    }
+  }
+}
