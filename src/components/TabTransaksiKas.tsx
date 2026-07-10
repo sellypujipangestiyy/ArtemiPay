@@ -194,7 +194,7 @@ export const TabTransaksiKas: React.FC = () => {
             </div>
           </div>
           <div className="mt-4 flex items-center justify-between text-[10px] font-semibold text-slate-400 border-t border-slate-100 pt-3">
-            <span>SIA Artemida Treasury</span>
+            <span>SIA Treasury</span>
             <span className="text-blue-900 font-bold px-1.5 py-0.5 bg-blue-50 border border-blue-100 rounded-sm">
               Aktif
             </span>
@@ -215,7 +215,7 @@ export const TabTransaksiKas: React.FC = () => {
             </div>
           </div>
           <p className="text-[9px] text-slate-450 mt-4 leading-normal bg-emerald-50/40 p-2 rounded border border-emerald-100/30">
-            Sumber dana masuk dari setoran modal owner & simulasi penjualan harian.
+            Sumber dana masuk dari setoran modal owner & penjualan harian.
           </p>
         </div>
 
@@ -477,7 +477,7 @@ export const TabTransaksiKas: React.FC = () => {
                       <td className="px-4 py-3 text-slate-500 font-semibold">
                         <div className="flex items-center gap-1.5 whitespace-nowrap">
                           <User className="h-3 w-3 text-slate-450 shrink-0" />
-                          <span>{tx.pencatat}</span>
+                          <span>{tx.pencatat ? tx.pencatat.replace(/Café Artemida|Cafe Artemida|Café|Cafe/gi, '').trim() : ''}</span>
                         </div>
                       </td>
                     </tr>
@@ -490,7 +490,7 @@ export const TabTransaksiKas: React.FC = () => {
           {/* TOTAL COUNTER DISPLAY footer */}
           <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 pt-2 border-t border-dashed border-slate-200">
             <span>Total Hasil Filter: {filteredTransactions.length} baris riwayat</span>
-            <span className="uppercase font-semibold text-slate-400">Café Artemida Financial Services</span>
+            <span className="uppercase font-semibold text-slate-400">Financial Services</span>
           </div>
         </div>
       </div>

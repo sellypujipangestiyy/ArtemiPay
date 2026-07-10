@@ -482,7 +482,7 @@ export const TabJurnalUmum: React.FC = () => {
               </h3>
             </div>
             <p className="text-[10px] text-slate-400 leading-normal">
-              Acuan kodefikasi nomor rekening standar akuntansi keuangan yang digunakan pada Café Artemida.
+              Acuan kodefikasi nomor rekening standar akuntansi keuangan yang digunakan.
             </p>
 
             <div className="space-y-1.5 max-h-64 overflow-y-auto pr-1">
@@ -652,7 +652,7 @@ export const TabJurnalUmum: React.FC = () => {
                             </span>
                             <span className="line-clamp-2">{entry.keterangan}</span>
                             <span className="text-[8px] text-slate-400 font-mono ml-auto">
-                              Oleh: {entry.pencatat}
+                              Oleh: {entry.pencatat ? entry.pencatat.replace(/Café Artemida|Cafe Artemida|Café|Cafe/gi, '').trim() : ''}
                             </span>
                           </div>
                         </td>
@@ -678,7 +678,7 @@ export const TabJurnalUmum: React.FC = () => {
               <span>Terhitung {filteredEntries.length} bundle transaksi ganda ({filteredEntries.length * 2} baris debet/kredit)</span>
             </div>
             <div className="uppercase tracking-widest font-black text-slate-400 text-right">
-              Café Artemida accounting ledger
+              Accounting ledger
             </div>
           </div>
         </div>

@@ -142,7 +142,7 @@ export const TabAbsensiInput: React.FC<TabAbsensiInputProps> = ({ forcedType }) 
       ctx.fillStyle = '#ffffff';
       ctx.font = 'bold 11px sans-serif';
       const matched = karyawan.find(k => k.id === selectedKaryawanId);
-      ctx.fillText(`CAFÉ ARTEMIDA [${tipeAbsen.toUpperCase()}] - ${matched ? matched.nama : 'Karyawan'}`, 20, canvas.height - 35);
+      ctx.fillText(`ARTEMIPAY [${tipeAbsen.toUpperCase()}] - ${matched ? matched.nama : 'Karyawan'}`, 20, canvas.height - 35);
       ctx.font = '9px sans-serif';
       ctx.fillStyle = '#fbbf24';
       ctx.fillText(`TANGGAL: ${tanggal} - ${new Date().toLocaleTimeString('id-ID')}`, 20, canvas.height - 18);
@@ -360,8 +360,8 @@ export const TabAbsensiInput: React.FC<TabAbsensiInputProps> = ({ forcedType }) 
           </h2>
           <p className="text-xs text-slate-500 font-medium">
             {tipeAbsen === 'Masuk' 
-              ? 'Mulai jam kerja operasional & verifikasi foto masuk Café Artemida' 
-              : 'Selesai jam kerja operasional & verifikasi foto pulang Café Artemida'}
+              ? 'Mulai jam kerja operasional & verifikasi foto masuk' 
+              : 'Selesai jam kerja operasional & verifikasi foto pulang'}
           </p>
         </div>
       </div>

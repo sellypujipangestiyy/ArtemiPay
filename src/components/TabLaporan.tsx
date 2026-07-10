@@ -46,7 +46,7 @@ export const TabLaporan: React.FC = () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `laporan_penggajian_artemida_${filterBulan}.csv`);
+    link.setAttribute("download", `laporan_penggajian_${filterBulan}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -65,7 +65,7 @@ export const TabLaporan: React.FC = () => {
       popupWin.document.write(`
         <html>
           <head>
-            <title>Cetak Slip Gaji — Café Artemida</title>
+            <title>Cetak Slip Gaji</title>
             <style>
               body { font-family: 'Helvetica Neue', Arial, sans-serif; padding: 40px; color: #333; line-height: 1.6; }
               .slip-container { max-width: 650px; margin: 0 auto; border: 2px solid #ddd; padding: 30px; border-radius: 12px; }
@@ -244,7 +244,7 @@ export const TabLaporan: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full overflow-hidden border">
             {/* Modal Actions Header */}
             <div className="bg-slate-50 px-6 py-4 border-b flex justify-between items-center text-xs">
-              <span className="font-bold text-slate-700">PRINTOUT PAYSLIP — CAFÉ ARTEMIDA</span>
+              <span className="font-bold text-slate-700">PRINTOUT PAYSLIP</span>
               <div className="flex space-x-2">
                 <button
                   onClick={() => handlePrintDocument('active-printed-gaji-slip')}
@@ -266,7 +266,7 @@ export const TabLaporan: React.FC = () => {
             <div className="p-8" id="active-printed-gaji-slip">
               <div className="slip-container">
                 <div className="header">
-                  <h2>CAFÉ ARTEMIDA</h2>
+                  <h2>ARTEMIPAY</h2>
                   <p>Slip Gaji Bulanan Resmi</p>
                   <small style={{ color: '#888', fontFamily: 'monospace' }}>Period: {activeSlip.bulan}</small>
                 </div>
@@ -328,7 +328,7 @@ export const TabLaporan: React.FC = () => {
                     <strong>{activeSlip.karyawanNama}</strong>
                   </div>
                   <div>
-                    <span style={{ fontSize: '11px', color: '#888' }}>Manajemen Café Artemida,</span>
+                    <span style={{ fontSize: '11px', color: '#888' }}>Manajemen,</span>
                     <div className="signature-space"></div>
                     <strong>Admin Gaji</strong>
                   </div>

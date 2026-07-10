@@ -23,7 +23,7 @@ export const TabCekKas: React.FC = () => {
 
     const success = await ajuDana(jumlahDana, alasan);
     if (success) {
-      setNotif('Permintaan tambahan dana dikirim kepada Owner Café Artemida secara real-time.');
+      setNotif('Permintaan tambahan dana dikirim kepada Owner secara real-time.');
       setJumlahDana(0);
       setAlasan('');
       // Dismiss

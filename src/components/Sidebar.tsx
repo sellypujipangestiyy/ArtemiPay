@@ -1,6 +1,6 @@
 import React from 'react';
 import { usePayroll } from '../context/PayrollContext';
-import brandLogo from '../assets/images/artemipay_logo_1781435859921.jpg';
+import brandLogo from '../assets/images/artemipay_user_logo_v2_1783648453098.jpg';
 import { 
   LayoutDashboard, 
   Users,
@@ -96,7 +96,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, setCurrentTab, isO
             />
             <div>
               <h1 className="text-[15px] font-black text-white tracking-tight leading-none font-display">ARTEMIPAY</h1>
-              <span className="text-[9px] font-mono font-bold tracking-wider text-blue-300 uppercase block mt-1">Café Artemida</span>
             </div>
           </div>
           
@@ -187,6 +186,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, setCurrentTab, isO
 
         {/* Footer controls: Reset DB and LogOut */}
         <div className="p-4 border-t border-blue-800 space-y-1.5 bg-blue-950/40">
+          <button
+            onClick={() => {
+              logoutUser();
+              onClose();
+            }}
+            className="w-full flex items-center justify-center space-x-2 py-2.5 rounded-lg text-xs font-bold bg-blue-950 text-slate-100 hover:bg-rose-955 hover:text-rose-300 hover:border-rose-900 border border-blue-850 transition-all cursor-pointer"
+          >
+            <LogOut className="h-4 w-4" />
+            <span>Keluar Sistem</span>
+          </button>
+
           <button 
             onClick={() => {
               if (window.confirm('Apakah Anda yakin ingin menyetel ulang seluruh database ArtemiPay ke data awal (seeding)?')) {
@@ -200,17 +210,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, setCurrentTab, isO
           >
             <Sparkles className="h-3.5 w-3.5 text-blue-300" />
             <span>Reset ke Data Seeding</span>
-          </button>
-
-          <button
-            onClick={() => {
-              logoutUser();
-              onClose();
-            }}
-            className="w-full flex items-center justify-center space-x-2 py-2.5 rounded-lg text-xs font-bold bg-blue-950 text-slate-100 hover:bg-rose-955 hover:text-rose-300 hover:border-rose-900 border border-blue-850 transition-all cursor-pointer"
-          >
-            <LogOut className="h-4 w-4" />
-            <span>Keluar Sistem</span>
           </button>
         </div>
       </div>

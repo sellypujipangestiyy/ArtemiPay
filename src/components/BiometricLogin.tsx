@@ -18,7 +18,7 @@ import {
   Check, 
   LockOpen 
 } from 'lucide-react';
-import brandLogo from '../assets/images/artemipay_logo_1781435859921.jpg';
+import brandLogo from '../assets/images/artemipay_user_logo_v2_1783648453098.jpg';
 import { motion, AnimatePresence } from 'motion/react';
 
 // Helper to compare two face image base64 data URLs using a downscaled structure grid analyzer
@@ -312,7 +312,7 @@ export const BiometricLogin: React.FC = () => {
               setTimeout(() => {
                 loginUser(
                   selectedRole, 
-                  selectedRole === 'Admin' ? 'Admin Gaji' : selectedRole === 'Owner' ? 'Owner Café Artemida' : (emp ? emp.nama : 'Karyawan'),
+                  selectedRole === 'Admin' ? 'Admin Gaji' : selectedRole === 'Owner' ? 'Owner' : (emp ? emp.nama : 'Karyawan'),
                   selectedRole === 'Karyawan' ? selectedKaryawanId : undefined
                 );
               }, 1000);
@@ -385,7 +385,7 @@ export const BiometricLogin: React.FC = () => {
     setTimeout(() => {
       loginUser(
         selectedRole, 
-        selectedRole === 'Admin' ? 'Admin Gaji' : selectedRole === 'Owner' ? 'Owner Café Artemida' : (emp ? emp.nama : 'Karyawan'),
+        selectedRole === 'Admin' ? 'Admin Gaji' : selectedRole === 'Owner' ? 'Owner' : (emp ? emp.nama : 'Karyawan'),
         selectedRole === 'Karyawan' ? selectedKaryawanId : undefined
       );
     }, 1200);
@@ -437,7 +437,7 @@ export const BiometricLogin: React.FC = () => {
           ARTEMIPAY
         </h1>
         <p className="mt-1 text-xs font-bold tracking-widest text-slate-500 font-mono uppercase">
-          Artemida Coffee and Eatery
+          Sistem Informasi & Payroll
         </p>
       </div>
 
